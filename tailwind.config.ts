@@ -1,6 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
+  daisyui: {
+    themes : [
+  "light", "dark", "cupcake", "corporate", "synthwave", 
+  "retro", "cyberpunk", "valentine", "garden", "aqua", 
+  "lofi", "luxury", "dracula", "cmyk", 
+  "autumn", "lemonade", "night", "coffee", "winter", 
+  "dim", "nord", "sunset"
+]
+  },
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -109,5 +118,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography"),require("daisyui")],
 };
