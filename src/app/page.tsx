@@ -11,7 +11,7 @@ import { Bridge } from "@/components/bridge";
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
 
-  console.log("themee", theme);
+
   const queryClient = new QueryClient();
 
   return (
