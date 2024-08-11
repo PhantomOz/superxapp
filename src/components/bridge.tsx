@@ -10,7 +10,7 @@ export function Bridge() {
   const [toAddress, setToAddress] = useState("0x4a...f7c7")
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#1B1B1B] to-[#2B2B2B]">
-      <Card className="w-full max-w-md p-4 bg-[#2B2B2B] rounded-lg">
+      <Card className="w-full max-w-md p-4 bg-[#2B2B2B] rounded-lg border-[#FFFFFF]">
         <div className="flex justify-between items-center mb-4" />
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
@@ -46,7 +46,7 @@ export function Bridge() {
         </div>
         <div className="mb-4 p-4 bg-[#3B3B3B] rounded-lg">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-3xl text-[#FFFFFF]">0</span>
+            <span className="text-3xl text-[#FFFFFF]" contentEditable>0</span>
             <Select className="w-20">
               <SelectTrigger className="flex items-center w-20">
                 <EclipseIcon className="w-4 h-4 mr-2 text-[#00D395]" />
@@ -71,7 +71,7 @@ export function Bridge() {
           </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-[#7C7C7C]">Receive on</span>
-            <Select className="w-32">
+            <Select className="w-32 text-white">
               <SelectTrigger className="flex items-center w-24">
                 <EclipseIcon className="w-4 h-4 mr-2 text-[#00D395]" />
                 <SelectValue placeholder="Sepolia" />
@@ -92,14 +92,14 @@ export function Bridge() {
             <span className="text-[#7C7C7C]">$0.1276 0 ETH</span>
           </div>
         </div>
-        <div className="mb-4 p-4 bg-[#3B3B3B] rounded-lg text-center">
+        <button className="mb-4 p-4 bg-[#3B3B3B] rounded-lg text-center w-full">
           <span className="text-[#7C7C7C]">Enter an amount</span>
-        </div>
+        </button>
         <div className="flex justify-between items-center">
           <Badge variant="default" className="bg-[#3B3B3B] text-[#7C7C7C]">
             Testnet
           </Badge>
-          <span className="text-[#7C7C7C]">Powered by Conduit</span>
+          <span className="text-[#7C7C7C]">Powered by SuperxApp & Chainlink CCIP</span>
         </div>
       </Card>
     </div>
