@@ -78,6 +78,7 @@ export const chainCurrency: any = {
     11155420: ['USDC', 'LINK', 'WETH', 'ETH'],
     421614: ['USDC', 'LINK', 'WETH', 'ETH'],
     84532: ['USDC', 'LINK', 'WETH', 'ETH'],
+    44787: ['USDC', 'LINK', 'WCELO', 'CELO'],
 }
 
 export interface ToChain {

@@ -17,6 +17,9 @@ export function Bridge() {
   const [toChains, setToChains] = useState<ToChain[]>([]);
   const [toNetwork, setToNetwork] = useState('11155111');
   const [fromTokens, setFromTokens] = useState<string[]>([]);
+  const [fromToken, setFromToken] = useState<string>();
+  const [toTokens, setToTokens] = useState<string[]>([]);
+  const [toToken, setToToken] = useState<string>();
 
   console.log(chains);
 
@@ -36,9 +39,19 @@ export function Bridge() {
   };
   const handleToNetworkChange = (e: string) => {
     setToNetwork(e);
+    setToTokens(chainCurrency[e]);
+  };
+
+  const handleFromTokenChange = (e: string) => {
+    setFromToken(e);
+  };
+
+  const handleToTokenChange = (e: string) => {
+    setToToken(e);
   };
   const handleValueChange = () => { };
   const handleAddressChange = () => { };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#1B1B1B] to-[#2B2B2B]">
@@ -76,24 +89,23 @@ export function Bridge() {
           <div className="flex justify-between items-center mb-2">
             <span className="text-3xl text-[#FFFFFF]" contentEditable>0</span>
             <div className="flex flex-col justify-between items-center">
-              <Select>
+              <Select onValueChange={handleFromTokenChange} value={fromToken}>
                 <SelectTrigger className="flex items-center w-20">
                   <EclipseIcon className="w-4 h-4 mr-2 text-[#00D395]" />
                   <SelectValue placeholder="ETH" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="eth">ETH</SelectItem>
+                  {fromTokens?.map((fromToken, index) => <SelectItem key={index + 100} value={fromToken}>{fromToken}</SelectItem>)}
                 </SelectContent>
               </Select>
               <p className="text-[#7C7C7C]">to</p>
-              <Select>
+              <Select onValueChange={handleToTokenChange} value={toToken}>
                 <SelectTrigger className="flex items-center w-20">
                   <EclipseIcon className="w-4 h-4 mr-2 text-[#00D395]" />
                   <SelectValue placeholder="ETH" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="eth">ETH</SelectItem>
-                  <SelectItem value="btc">BTC</SelectItem>
+                  {toTokens?.map((toToken, index) => <SelectItem key={index + 100} value={toToken}>{toToken}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
