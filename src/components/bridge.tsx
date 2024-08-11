@@ -5,22 +5,38 @@ import { Card } from "@/components/ui/card"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { useAccount, useChainId, useSwitchChain } from "wagmi"
+import { useAccount, useBalance, useChainId, useSwitchChain } from "wagmi"
+import { chainCurrency, ToChain, toChainSelector } from "@/hooks/useBridge"
 
 export function Bridge() {
   const [toAddress, setToAddress] = useState<`0x${string}` | undefined>("0x4a...f7c7");
   const { address, isConnected } = useAccount();
+  const { data, isLoading, isError } = useBalance({ address: address });
   const chainId = useChainId();
   const { chains, switchChain } = useSwitchChain();
+  const [toChains, setToChains] = useState<ToChain[]>([]);
+  const [toNetwork, setToNetwork] = useState('11155111');
+  const [fromTokens, setFromTokens] = useState<string[]>([]);
+
+  console.log(chains);
 
   useEffect(() => {
     setToAddress(address);
-  }, [isConnected])
+  }, [isConnected]);
+
+  useEffect(() => {
+    const chainSelector = toChainSelector[chainId];
+    setToChains(chainSelector)
+    setToNetwork(chainSelector[0].id);
+    setFromTokens(chainCurrency[chainId]);
+  }, [isConnected, chainId]);
 
   const handleFromNetworkChange = (e: string) => {
     switchChain({ chainId: Number(e) });
   };
-  const handleToNetworkChange = () => { };
+  const handleToNetworkChange = (e: string) => {
+    setToNetwork(e);
+  };
   const handleValueChange = () => { };
   const handleAddressChange = () => { };
 
@@ -31,7 +47,7 @@ export function Bridge() {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
             <span>
-              <Select onValueChange={handleFromNetworkChange}>
+              <Select onValueChange={handleFromNetworkChange} value={`${chainId}`}>
                 <SelectTrigger className="flex items-center">
                   <EclipseIcon className="w-4 h-4 mr-2 text-[#00D395]" />
                   <SelectValue placeholder="Sepolia" />
@@ -45,15 +61,13 @@ export function Bridge() {
           </div>
           <ArrowRightIcon className="w-6 h-6 text-[#7C7C7C]" />
           <div className="flex items-center">
-            <Select>
+            <Select onValueChange={handleToNetworkChange} value={toNetwork}>
               <SelectTrigger className="flex items-center">
                 <EclipseIcon className="w-4 h-4 mr-2 text-[#00D395]" />
                 <SelectValue placeholder="Sepolia" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="sepolia">Sepolia</SelectItem>
-                <SelectItem value="mainnet">Mainnet</SelectItem>
-                <SelectItem value="goerli">Goerli</SelectItem>
+                {toChains?.map((toChain, index) => <SelectItem key={index + 5} value={toChain?.id}>{toChain?.name}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -69,7 +83,6 @@ export function Bridge() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="eth">ETH</SelectItem>
-                  <SelectItem value="btc">BTC</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-[#7C7C7C]">to</p>
@@ -86,14 +99,20 @@ export function Bridge() {
             </div>
           </div>
           <div className="text-[#7C7C7C] flex justify-between items-center">
-            <p>$0</p> <p>3.029 ETH available</p></div>
+            <p>$0</p> {isLoading ? (
+              <p>Loading balance...</p>
+            ) : isError ? (
+              <p>Error fetching balance</p>
+            ) : (
+              <p>{Number(data?.formatted).toFixed(3)} {data?.symbol} Available</p>
+            )}</div>
         </div>
         <div className="mb-4 p-4 bg-[#3B3B3B] rounded-lg">
           <div className="flex justify-between items-center mb-2 w-full">
             <p className="text-[#7C7C7C]">To address</p>
             <Input
               value={toAddress}
-              onChange={(e) => setToAddress(e.target.value)}
+              onChange={(e) => setToAddress(e.target.value as `0x{string}`)}
               className="text-[#00D395] bg-transparent border-none w-fit flex-1 focus:ring-0"
             />
           </div>
